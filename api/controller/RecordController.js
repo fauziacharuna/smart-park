@@ -1,6 +1,9 @@
 const Record = require('../model/Records')
 const Park = require('../model/Parks')
 
+var vehicleCounter = []
+var capacity = []
+
 exports.createRecord = async (req, res, next) =>{
     const record = await Record.create(req.body)
     res.status(201).json({
@@ -35,7 +38,12 @@ exports.getCountVehicle = async (req, res, next) =>{
             success: true,
             data : vehicle
         })
-        console.log(vehicle)
+        // console.log(vehicle)
+        for(var i in vehicle){
+            var a=vehicle[i]
+            vehicleCounter.push(a)
+        }
+        console.log(vehicleCounter)
 
     }catch (err){
         res.status(400).json({
@@ -50,7 +58,12 @@ exports.getParks = async (req, res, next)=>{
             success: true,
             data: parks
         })
-        console.log(parks)
+        // console.log(parks)
+        for(var i in parks){
+            var a = parks[i]
+            capacity.push(a)
+        }
+        console.log(capacity)
 
     }catch (err){
         res.status(400).json({
@@ -66,4 +79,16 @@ exports.createPark = async (req, res, next) =>{
         data: park
     })
     console.log(park)
+}
+exports.getSlot = async (req, res, next) =>{
+    var slot = []
+    console.log(capacity)
+    for(var i in slot){
+        slot[i] = capacity[i] - vehicleCounter[i]
+    }
+    var getSlot = await slot
+    res.status(200).json({
+        success: true,
+        data: getSlot
+    })
 }
