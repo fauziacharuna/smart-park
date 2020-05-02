@@ -1,20 +1,18 @@
 const mongoose = require('mongoose')
-
 const RecordSchema = new mongoose.Schema({
     time:{
         type: Date,
         default: Date.now
     },
-    topic:{
-        type: String,
-        default: "detection"
-    },
     status:{
         type: String,
-        required: (true,"Please enter status")
+        required: [true,'Please enter status']
     },
     location:{
-        type:String,
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Parks'
     }
 
 }, {versionKey: false})
+
+module.exports = mongoose.model('records', RecordSchema)
