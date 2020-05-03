@@ -1,8 +1,11 @@
 const Record = require('../model/Records')
 const Park = require('../model/Parks')
 
-var vehicleCounter = []
-var capacity = []
+var vehicleIn = {}
+
+var vehicleOut = {}
+var capacity = {}
+var vehicleCounter = {}
 
 exports.createRecord = async (req, res, next) =>{
     const record = await Record.create(req.body)
@@ -34,36 +37,81 @@ exports.getRecords = async(req, res, next) =>{
 exports.getCountVehicle = async (req, res, next) =>{
     try{
         const vehicle = await Record.aggregate([{"$group" :{_id:{status:"$status", location:"$location"}, jumlah_kendaraan:{$sum:1}}}])
+        for(var i in vehicle){
+            if(vehicle[i]._id.status=='masuk'){
+                if(vehicleCounter.hasOwnProperty(vehicle[i]._id.location)){
+                    vehicleCounter[vehicle[i]._id.location] += vehicle[i].jumlah_kendaraan
+                }else{
+                    vehicleCounter[vehicle[i]._id.location] = vehicle[i].jumlah_kendaraan
+                }
+
+            }else if(vehicle[i]._id.status=='keluar'){
+                if(vehicleCounter.hasOwnProperty(vehicle[i]._id.location)){
+                    vehicleCounter[vehicle[i]._id.location] -= vehicle[i].jumlah_kendaraan
+                }else{
+                    vehicleCounter[vehicle[i]._id.location] = 0 - vehicle[i].jumlah_kendaraan
+                }
+           }
+        }
+        // for(var i in vehicle){
+        //     if(vehicle[i]._id.status == 'masuk'){
+        //         vehicleIn[vehicle[i]._id.location] = vehicle[i].jumlah_kendaraan
+        //     }else if(vehicle[i]._id.status =='keluar'){
+        //         vehicleOut[vehicle[i]._id.location] = vehicle[i].jumlah_kendaraan
+        //     }
+        // }
         res.status(200).json({
             success: true,
-            data : vehicle
-        })
-        // console.log(vehicle)
-        for(var i in vehicle){
-            var a=vehicle[i]
-            vehicleCounter.push(a)
-        }
-        console.log(vehicleCounter)
+            vehicle_counter : vehicleCounter
+        }) 
+        app.locals.vehicle_counter = vehicleCounter
+        // console.log(vehicleCounter[vehicle[1]._id.location])
+        // vehicleCalc = vehicleCounter 
+        // console.log(vehicleCalc)
+        //   this.calculate()
 
+        // console.log(vehicleCounter)
     }catch (err){
         res.status(400).json({
             success: false
         })
     }
+    // console.log(global.vehicleIn = vehicleCounter)
 }
+exports.getSlot = async (req, res, next) => {
+    try{
+        console.log(vehicleCounter)
+        // console.log(vehicleCalc)
+        // console.log(vehicleCount)
+        const cap = await Park.find()
+        for(var i in cap){
+            capacity[cap[i]._id] = cap[i].capacity
+        }
+        // console.log(vehicleCounter)
+        res.status(200).json({
+            success: true,
+            data: capacity
+        })
+        console.log(capacity)    
+    }catch(err){
+        res.status(400).json({
+            success: false
+        })
+
+    }
+   
+}
+
 exports.getParks = async (req, res, next)=>{
+    
     try{
         const parks = await Park.find()
         res.status(200).json({
             success: true,
             data: parks
         })
-        // console.log(parks)
-        for(var i in parks){
-            var a = parks[i]
-            capacity.push(a)
-        }
-        console.log(capacity)
+        console.log(parks)
+       
 
     }catch (err){
         res.status(400).json({
@@ -80,15 +128,15 @@ exports.createPark = async (req, res, next) =>{
     })
     console.log(park)
 }
-exports.getSlot = async (req, res, next) =>{
-    var slot = []
-    console.log(capacity)
-    for(var i in slot){
-        slot[i] = capacity[i] - vehicleCounter[i]
-    }
-    var getSlot = await slot
-    res.status(200).json({
-        success: true,
-        data: getSlot
-    })
-}
+// exports.getSlot = async (req, res, next) =>{
+//     var slot = []
+//     console.log(capacity)
+//     for(var i in slot){
+//         slot[i] = capacity[i] - vehicleCounter[i]
+//     }
+//     var getSlot = await slot
+//     res.status(200).json({
+//         success: true,
+//         data: getSlot
+//     })
+// }
