@@ -10,7 +10,7 @@ const RecordSchema = new mongoose.Schema({
     },
     location:{
         type:mongoose.Schema.Types.ObjectId,
-        ref:'Parks'
+        ref:'parks'
     }
 
 }, {versionKey: false})

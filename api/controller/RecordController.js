@@ -14,11 +14,11 @@ exports.createRecord = async (req, res, next) =>{
     })
     console.log(record)
 }
-exports.getRecords = async(req, res, next) =>{
+exports.getAllRecords = async(req, res, next) =>{
   
     try{
-        const records = await Record
-        .find()
+        const records = await Record.find()
+        
         // .populate({path:'location', match: {x:1}, select:'status time location'})
         // .select('status time location')
         // const records = await Record.find(query).populate('location')
@@ -67,5 +67,27 @@ exports.getCountVehicle = async (req, res, next) =>{
     }
     // console.log(global.vehicleIn = vehicleCounter)
 }
+exports.getSlot = async (req, res, next) => {
+    try{
+        console.log(vehicleCounter)
+        // console.log(vehicleCalc)
+        // console.log(vehicleCount)
+        const cap = await Park.find()
+        for(var i in cap){
+            capacity[cap[i]._id] = cap[i].capacity
+        }
+        // console.log(vehicleCounter)
+        res.status(200).json({
+            success: true,
+            data: capacity
+        })
+        console.log(capacity)    
+    }catch(err){
+        res.status(400).json({
+            success: false
+        })
 
+    }
+   
+}
 
