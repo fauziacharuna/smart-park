@@ -1,11 +1,12 @@
 const Park = require('../model/Parks')
 const Record = require('../model/Records')
-var capacity = {}
-var vehicleCounter = {}
-var slot = {}
+
 
 
 exports.getSlot = async (req, res, next) => {
+var capacity = {}
+var vehicleCounter = {}
+var slot = {}
 
     try{
         const cap = await Park.find()
@@ -48,17 +49,17 @@ exports.getSlot = async (req, res, next) => {
 exports.getParks = async (req, res, next)=>{
     try{
         const cap = await Park.find()
-        for(var i in cap){   
-            capacity[cap[i]._id] = cap[i].capacity
-        }
+        // for(var i in cap){   
+        //     capacity[cap[i]._id] = cap[i].capacity
+        // }
         // console.log(cap)
       
         // const parks = await Park.find()
         res.status(200).json({
             success: true,
-            data: capacity
+            data: cap
         })
-        console.log(capacity)
+        console.log(cap)
         // console.log(parks)
        
 
