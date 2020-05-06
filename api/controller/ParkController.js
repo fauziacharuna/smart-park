@@ -1,8 +1,6 @@
 const Park = require('../model/Parks')
 const Record = require('../model/Records')
 
-
-
 exports.getSlot = async (req, res, next) => {
 var capacity = {}
 var vehicleCounter = {}
@@ -54,12 +52,6 @@ var dataSlot=[]
             data: dataSlot
         }) 
         console.log(dataSlot)
-        // console.log(cap)
-        // console.log(capacity)
-        // console.log(vehicle)
-        // console.log(vehicleCounter)
-        // console.log(slot)
-        // console.log(slot)
     }catch(err){
         res.status(400).json({
             success: false
@@ -67,14 +59,7 @@ var dataSlot=[]
     }
 }
 
-exports.getLoc = (req, res) => {
-    Park.findOne({ _id: req.para })
-       .populate('name')
-       .then((park) => { res.json(park) })
-       .catch((error) => { res.status(400).json({ error })
-       });
-   };
-exports.getParks = async (req, res, next)=>{
+exports.getParks = async (req, res, next) =>{
     try{
         const cap = await Park.find()   
         res.status(200).json({

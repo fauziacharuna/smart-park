@@ -1,8 +1,4 @@
 const Record = require('../model/Records')
-
-var vehicleIn = {}
-
-var vehicleOut = {}
 var capacity = {}
 var vehicleCounter = {}
 
@@ -14,15 +10,10 @@ exports.createRecord = async (req, res, next) =>{
     })
     console.log(record)
 }
+
 exports.getAllRecords = async(req, res, next) =>{
-  
     try{
         const records = await Record.find()
-        
-        // .populate({path:'location', match: {x:1}, select:'status time location'})
-        // .select('status time location')
-        // const records = await Record.find(query).populate('location')
-        // populate('location', 'name capacity -_id').select('status time location')
         res.status(200).json({
             success: true,
             data: records
@@ -53,7 +44,6 @@ exports.getCountVehicle = async (req, res, next) =>{
                 }
            }
         }
-     
         res.status(200).json({
             success: true,
             vehicle_counter : vehicleCounter
@@ -65,18 +55,15 @@ exports.getCountVehicle = async (req, res, next) =>{
             success: false
         })
     }
-    // console.log(global.vehicleIn = vehicleCounter)
+    // 
 }
 exports.getSlot = async (req, res, next) => {
     try{
         console.log(vehicleCounter)
-        // console.log(vehicleCalc)
-        // console.log(vehicleCount)
         const cap = await Park.find()
         for(var i in cap){
             capacity[cap[i]._id] = cap[i].capacity
         }
-        // console.log(vehicleCounter)
         res.status(200).json({
             success: true,
             data: capacity
