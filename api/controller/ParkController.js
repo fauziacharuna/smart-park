@@ -1,18 +1,18 @@
 const Park = require('../model/Parks')
 const Record = require('../model/Records')
-var dataLoc ={}
+
 
 
 exports.getSlot = async (req, res, next) => {
 var capacity = {}
 var vehicleCounter = {}
 var slot = {}
+var dataSlot=[]
     try{
         const cap = await Park.find()
         for(var i in cap){   
             capacity[cap[i]._id] = cap[i].capacity
         }
-        // console.log(capacity)
         const vehicle = await Record.aggregate([{"$group" :{_id:{status:"$status", location:"$location"}, jumlah_kendaraan:{$sum:1}}}])
         for(var i in vehicle){
         
@@ -31,24 +31,29 @@ var slot = {}
                 }
            }
         }
-        // console.log(vehicle[0])
-        // console.log(vehicle[1]
-        // console.log(vehicleCounter['5eaced823cc8990f32ce40fb'])
-        // console.log(vehicleCounter[vehicle[0]._id.location])
         for(var i in cap){    
             slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[cap[i]._id]     
         }
         for(var i in cap ){
-            dataLoc.kapasitas = capacity[cap[i]._id];
-            dataLoc.jumlahKendaraan = vehicleCounter[cap[i]._id];
-            dataLoc.slot = slot[cap[i]._id];
-
-        }
-        console.log(dataLoc)
+           cap[i]._id === cap[i]._id?
+            dataSlot.push({
+                location: cap[i]._id,
+                kapasitas: capacity[cap[i]._id],
+                jumlahKendaraan: vehicleCounter[cap[i]._id],
+                slot: slot[cap[i]._id],
+            }) :
+            dataSlot.push({
+                location: null,
+                kapasitas: null,
+                jumlahKendaraan: null,
+                slot: null,
+            })
+        }    
         res.status(200).json({
             success: true,
-            slot: slot
+            data: dataSlot
         }) 
+        console.log(dataSlot)
         // console.log(cap)
         // console.log(capacity)
         // console.log(vehicle)
@@ -61,6 +66,14 @@ var slot = {}
         })
     }
 }
+
+exports.getLoc = (req, res) => {
+    Park.findOne({ _id: req.para })
+       .populate('name')
+       .then((park) => { res.json(park) })
+       .catch((error) => { res.status(400).json({ error })
+       });
+   };
 exports.getParks = async (req, res, next)=>{
     try{
         const cap = await Park.find()   
