@@ -57,6 +57,17 @@ exports.getCountVehicle = async (req, res, next) =>{
     }
     // 
 }
+exports.listRecords = async (req,res,next) =>{
+    const record = await Record
+    .find()
+    .populate('location', 'name capacity slot -_id')
+    .select('status time location')
+    res.status(200).json({
+        success: true,
+        data: record
+    })
+    console.log(record)
+}
 exports.getSlot = async (req, res, next) => {
     try{
         console.log(vehicleCounter)

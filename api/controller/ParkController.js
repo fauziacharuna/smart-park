@@ -32,10 +32,13 @@ var dataSlot=[]
         for(var i in cap){    
             slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[cap[i]._id]     
         }
+       
         for(var i in cap ){
+        locName = cap[i].name
            cap[i]._id === cap[i]._id?
             dataSlot.push({
-                location: cap[i]._id,
+                // location: cap[i]._id,
+                location: locName,
                 kapasitas: capacity[cap[i]._id],
                 jumlahKendaraan: vehicleCounter[cap[i]._id],
                 slot: slot[cap[i]._id],
@@ -59,6 +62,7 @@ var dataSlot=[]
     }
 }
 
+
 exports.getParks = async (req, res, next) =>{
     try{
         const cap = await Park.find()   
@@ -73,6 +77,7 @@ exports.getParks = async (req, res, next) =>{
         })
     }
 }
+
 exports.createPark = async (req, res, next) =>{
     const park = await Park.create(req.body)
     res.status(200).json({
