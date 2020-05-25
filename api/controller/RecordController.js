@@ -11,20 +11,6 @@ exports.createRecord = async (req, res, next) =>{
     console.log(record)
 }
 
-exports.getAllRecords = async(req, res, next) =>{
-    try{
-        const records = await Record.find()
-        res.status(200).json({
-            success: true,
-            data: records
-        })
-        console.log(records)
-
-    }catch (err){
-        res.status(400).json({success: false})
-
-    }
-}
 exports.getCountVehicle = async (req, res, next) =>{
     try{
         const vehicle = await Record.aggregate([{"$group" :{_id:{status:"$status", location:"$location"}, jumlah_kendaraan:{$sum:1}}}])
