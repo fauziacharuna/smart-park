@@ -1,7 +1,7 @@
 const express = require('express')
 const dotenv = require('dotenv')
 const { createRecord, getCountVehicle, listRecords} = require('../controller/RecordController')
-const {getParks,  createPark, getSlot} = require('../controller/ParkController')
+const {getParks,  createPark, getSlot,getPark} = require('../controller/ParkController')
 
 
 const router = express.Router()
@@ -16,6 +16,11 @@ router.route('/vehicle')
 router.route('/park')
     .get(getParks)
     .post(createPark)
+router.route('/park/:id')
+    .get(getPark)
+
+// router.route('/park/:id')
+//     .get(getPark)
 router.route('/slot')
     .get(getSlot)
 

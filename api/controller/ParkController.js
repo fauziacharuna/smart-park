@@ -29,8 +29,12 @@ var dataSlot=[]
                 }
            }
         }
-        for(var i in cap){    
-            slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[cap[i]._id]     
+        for(var i in cap){ 
+            if(vehicleCounter[cap[i]._id]<=capacity[cap[i]._id]) {
+                slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[cap[i]._id]     
+            } else{
+                console.log("slot is full")
+            }
         }
        
         for(var i in cap ){
@@ -75,6 +79,22 @@ exports.getParks = async (req, res, next) =>{
         res.status(400).json({
             success: false
         })
+    }
+}
+exports.getPark = async(req, res, next)=>{
+    try{
+        const park = await Park.findById(req.params.id)
+        res.status(200).json({
+            success: true,
+            data: park
+        })
+        console.log(park)
+
+    }catch(err){
+        res.status(400).json({
+            success: false
+        })
+
     }
 }
 
