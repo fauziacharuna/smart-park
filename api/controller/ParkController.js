@@ -20,14 +20,13 @@ var dataSlot=[]
                 }else{
                     vehicleCounter[vehicle[i]._id.location] = vehicle[i].jumlah_kendaraan
                 }
-
             }else if(vehicle[i]._id.status=='keluar'){
                 if(vehicleCounter.hasOwnProperty(vehicle[i]._id.location)){
                     vehicleCounter[vehicle[i]._id.location] -= vehicle[i].jumlah_kendaraan
                 }else{
                     vehicleCounter[vehicle[i]._id.location] = 0 - vehicle[i].jumlah_kendaraan
                 }
-           }
+            }
         }
         for(var i in cap){ 
             if(vehicleCounter[cap[i]._id]<=capacity[cap[i]._id]) {
@@ -48,10 +47,10 @@ var dataSlot=[]
                 slot: slot[cap[i]._id],
             }) :
             dataSlot.push({
-                location: null,
-                kapasitas: null,
-                jumlahKendaraan: null,
-                slot: null,
+                location: 0,
+                kapasitas: 0,
+                jumlahKendaraan: 0,
+                slot: 0,
             })
         }    
         res.status(200).json({
@@ -65,8 +64,6 @@ var dataSlot=[]
         })
     }
 }
-
-
 exports.getParks = async (req, res, next) =>{
     try{
         const cap = await Park.find()   
