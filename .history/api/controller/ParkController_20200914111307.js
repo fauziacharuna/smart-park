@@ -30,8 +30,10 @@ exports.getSlot = async (req, res, next) => {
            }
         }
         for(var i in cap){    
-            slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[vehicle[i]._id.location]      
+            slot[cap[i]._id] = capacity[cap[i]._id] - vehicleCounter[vehicle[i]._id.location]    
+            
         }
+       
         res.status(200).json({
             success: true,
             slot: slot
